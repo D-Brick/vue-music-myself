@@ -101,11 +101,14 @@ export default {
       })
     },
     _play() {
-      let pageIndex = this.currentPageIndex + 1
+      let pageIndex = this.currentPageIndex === (this.children.length - 3) ? 0 : this.currentPageIndex + 1
       this.timer = setTimeout(() => {
         this.slider.goToPage(pageIndex, 0, 400)
       }, this.interval)
     }
+  },
+  destroyed() {
+    clearTimeout(this.timer)
   }
 }
 </script>
