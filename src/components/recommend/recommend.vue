@@ -58,7 +58,7 @@ export default {
     this._getRecommend()
     setTimeout(() => {
       this._getDiscList()
-    }, 2000)
+    }, 1000)
   },
   methods: {
     _getRecommend() {
