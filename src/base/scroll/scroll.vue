@@ -43,6 +43,12 @@ export default {
     enable () {
       this.scroll && this.scroll.enable()
     },
+    scrollTo() {
+      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+    },
+    scrollToElement() {
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+    },
     _refresh () {
       this.scroll && this.scroll.refresh()
     }
