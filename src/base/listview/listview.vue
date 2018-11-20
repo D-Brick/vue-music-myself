@@ -1,6 +1,6 @@
 <template>
   <scroll class="listview"
-          :data="arr"
+          :data="data"
           ref="listview"
           :listen-scroll="listenScroll"
           :probe-type="probeType"
@@ -8,13 +8,14 @@
   >
     <ul>
       <li class="list-group"
-          v-for="(group, index) in arr"
+          v-for="(group, index) in data"
           :key="index"
           ref="listgroup"
       >
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li class="list-group-item"
+          <li @click="selectItem(item)"
+              class="list-group-item"
               v-for="item in group.items"
               :key="item.id"
           >
@@ -45,7 +46,7 @@
         {{fixedTitle}}
       </h1>
     </div>
-    <div v-show="!arr.length"
+    <div v-show="!data.length"
          class="loading-container">
       <loading></loading>
     </div>
@@ -62,7 +63,7 @@ const SHORT_HEIGHT = 18
 
 export default {
   props: {
-    arr: {
+    data: {
       type: Array,
       default() {
         return []
@@ -78,7 +79,7 @@ export default {
   },
   computed: {
     shortcutList() {
-      return this.arr.map((group) => {
+      return this.data.map((group) => {
         return group.title.substring(0, 1)
       })
     },
@@ -86,7 +87,7 @@ export default {
       if (this.scrollY > 0) {
         return ''
       }
-      return this.arr[this.currentIndex] ? this.arr[this.currentIndex].title : ''
+      return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
     }
   },
   created() {
@@ -108,11 +109,13 @@ export default {
       this.touch.y2 = firstTouch.pageY
       let delta = Math.floor((this.touch.y2 - this.touch.y1) / SHORT_HEIGHT)
       let anchorIndex = parseInt(this.touch.anchorIndex) + delta
-
       this._scrollTo(anchorIndex)
     },
     scroll(pos) {
       this.scrollY = pos.y
+    },
+    selectItem(item) {
+      this.$emit('select', item)
     },
     _calculateHeight() {
       this.listHeight = []
@@ -140,7 +143,7 @@ export default {
     }
   },
   watch: {
-    arr() {
+    data() {
       setTimeout(() => {
         this._calculateHeight()
       }, 20)

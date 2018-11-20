@@ -1,6 +1,9 @@
 <template>
   <div class="singer">
-    <list-view :arr="singerList"></list-view>
+    <list-view :data="singerList"
+               @select="selectSinger">
+    </list-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,6 +12,7 @@ import {getSingerList} from 'api/singer'
 import {ERR_OK} from 'api/config'
 import Singer from 'common/js/singer'
 import ListView from 'base/listview/listview'
+import {mapMutations} from 'vuex'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
@@ -20,11 +24,15 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      this._getSingerList()
-    }, 1000)
+    this._getSingerList()
   },
   methods: {
+    selectSinger(singer) {
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+      this.setSinger(singer)
+    },
     _getSingerList() {
       getSingerList().then(res => {
         if (res.code === ERR_OK) {
@@ -39,7 +47,6 @@ export default {
           items: []
         }
       }
-
       list.forEach((item, index) => {
         if (index < HOT_SINGER_LEN) {
           map.hot.items.push(new Singer({
@@ -66,7 +73,7 @@ export default {
         let val = map[key]
         if (val.title.match(/[a-zA-Z]/)) {
           ret.push(val)
-        } else {
+        } else if (val.title === HOT_NAME) {
           hot.push(val)
         }
       }
@@ -74,7 +81,10 @@ export default {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
       return hot.concat(ret)
-    }
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   components: {
     ListView
