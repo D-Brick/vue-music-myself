@@ -22,6 +22,9 @@ export default {
   methods: {
     clear() {
       this.query = ''
+    },
+    setQuery(query) {
+      this.query = query
     }
   },
   created() {
@@ -33,6 +36,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+
   .search-box
     display: flex
     align-items: center
