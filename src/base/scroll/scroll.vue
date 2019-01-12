@@ -59,14 +59,14 @@ export default {
     scrollToElement() {
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     },
-    _refresh () {
+    refresh () {
       this.scroll && this.scroll.refresh()
     }
   },
   watch: {
     dataList () {
       setTimeout(() => {
-        this._refresh()
+        this.refresh()
       }, 20)
     }
   }

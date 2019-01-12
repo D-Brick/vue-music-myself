@@ -117,6 +117,9 @@ export default {
     selectItem(item) {
       this.$emit('select', item)
     },
+    refresh() {
+      this.$refs.listview.refresh()
+    },
     _calculateHeight() {
       this.listHeight = []
       const list = this.$refs.listgroup

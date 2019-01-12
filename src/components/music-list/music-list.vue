@@ -10,7 +10,8 @@
          ref="bgImage">
       <div class="play-wrapper"
            ref="playWrapper">
-        <div class="play">
+        <div class="play"
+             @click="random">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -28,7 +29,10 @@
             :probe-type="probeType"
             @scroll="scroll">
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list @select="selectSong"
+                   :songs="songs"
+                   :rank="rank">
+        </song-list>
       </div>
       <div class="loading-container"
            v-if="!songs.length">
@@ -43,16 +47,19 @@ import SongList from 'base/song-list/song-list'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import {prefixStyle} from 'common/js/dom'
+import {mapActions} from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
 
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop')
 
 export default {
+  mixins: [playlistMixin],
   props: {
     songs: {
       type: Array,
-      default: []
+      default: () => []
     },
     bgImage: {
       type: String,
@@ -61,6 +68,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -83,12 +94,32 @@ export default {
     this.probeType = 3
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     scroll(pos) {
       this.scrollY = pos.y
     },
     handleClickBack() {
       this.$router.back()
-    }
+    },
+    selectSong(song, index) {
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    random() {
+      this.randomPlay({
+        list: this.songs
+      })
+    },
+    ...mapActions([
+      'selectPlay',
+      'randomPlay'
+    ])
   },
   components: {
     SongList,
