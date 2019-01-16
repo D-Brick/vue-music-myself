@@ -47,7 +47,7 @@ export function createSong(musicData) {
   })
 }
 
-function fileterSinger(singer) {
+export function fileterSinger(singer) {
   let ret = []
   if (!singer) {
     return ''
