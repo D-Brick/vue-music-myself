@@ -1,7 +1,10 @@
 <template>
   <div class="search">
     <div class="search-box-wrapper">
-      <search-box ref="searchBox" @query="onQueryChange"></search-box>
+      <search-box ref="searchBox"
+                  @query="onQueryChange"
+                  :query="query">
+      </search-box>
     </div>
     <div class="shortcut-wrapper" v-show="!query">
       <div class="shortcut">
@@ -12,6 +15,18 @@
               <span>{{item.k}}</span>
             </li>
           </ul>
+        </div>
+        <div class="search-history" v-show="searchHistory.length">
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear" @click="clearSearchHistory">
+              <i class="icon-clear"></i>
+            </span>
+          </h1>
+          <search-list :searches="searchHistory"
+                       @selectSearch="selectSearch"
+                       @deleteSearch="deleteSearch">
+          </search-list>
         </div>
       </div>
     </div>
@@ -28,15 +43,21 @@
 <script>
 import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
+import SearchList from 'base/search-list/search-list'
 import { getHotKey } from 'api/search'
 import { ERR_OK } from 'api/config'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
       hotKey: [],
       query: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ])
   },
   created() {
     this._getHotKey()
@@ -51,6 +72,12 @@ export default {
     saveSelect() {
       this.saveSearchHistory(this.query)
     },
+    selectSearch(query) {
+      this.$refs.searchBox.setQuery(query)
+    },
+    deleteSearch(query) {
+      this.deleteSearchHistory(query)
+    },
     _getHotKey() {
       getHotKey().then((res) => {
         if (res.code === ERR_OK) {
@@ -61,13 +88,16 @@ export default {
     onQueryChange(query) {
       this.query = query.trim()
     },
-    ...mapActions({
-      saveSearchHistory: 'saveSearchHistory'
-    })
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory',
+      'clearSearchHistory'
+    ])
   },
   components: {
     SearchBox,
-    Suggest
+    Suggest,
+    SearchList
   }
 }
 </script>

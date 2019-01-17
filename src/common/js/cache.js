@@ -1,4 +1,4 @@
-// import storage from 'good-storage'
+import storage from 'good-storage'
 
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15
@@ -17,22 +17,35 @@ function insertArray(arr, val, compare, maxLen) {
   }
 }
 
+function deleteArray(arr, compare) {
+  const index = arr.findIndex(compare)
+  console.log(index)
+  arr.splice(index, 1)
+}
+
 export function saveSearch(query) {
-  // let searches = storage.get(SEARCH_KEY, [])
-  let searches = []
-  // if (localStorage[SEARCH_KEY]) {
-  //   searches = localStorage[SEARCH_KEY]
-  // } else {
-  //   localStorage[SEARCH_KEY] = []
-  //   searches = localStorage[SEARCH_KEY]
-  // }
+  let searches = storage.get(SEARCH_KEY, [])
   insertArray(searches, query, (item) => {
-    item = query
+    return item === query
   }, SEARCH_MAX_LENGTH)
-  localStorage[SEARCH_KEY] = searches
+  storage.set(SEARCH_KEY, searches)
   return searches
 }
 
+export function deleteSearch(query) {
+  let searches = storage.get(SEARCH_KEY, [])
+  deleteArray(searches, (item) => {
+    return item === query
+  })
+  storage.set(SEARCH_KEY, searches)
+  return searches
+}
+
+export function clearSearch() {
+  storage.set(SEARCH_KEY, [])
+  return []
+}
+
 export function loadSearch() {
-  return localStorage[SEARCH_KEY]
+  return storage.get(SEARCH_KEY, [])
 }

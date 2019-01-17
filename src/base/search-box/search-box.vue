@@ -14,6 +14,10 @@ export default {
     placeholder: {
       type: String,
       default: '搜索歌曲、歌手'
+    },
+    historyQuery: {
+      type: String,
+      default: ''
     }
   },
   data() {
