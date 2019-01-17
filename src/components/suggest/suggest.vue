@@ -17,6 +17,9 @@
       </li>
       <loading title="" v-show="hasMore"></loading>
     </ul>
+    <div class="no-result-wrapper" v-show="!result.length && !hasMore">
+      <no-result title="抱歉，没有搜索结果"></no-result>
+    </div>
   </scroll>
 </template>
 
@@ -27,6 +30,7 @@ import { createSong, processSongsUrl } from 'common/js/song'
 import Loading from 'base/loading/loading'
 import Scroll from 'base/scroll/scroll'
 import Singer from 'common/js/singer'
+import NoResult from 'base/no-result/no-result'
 import { mapMutations, mapActions } from 'vuex'
 
 const TYPE_SINGER = 'singer'
@@ -109,7 +113,7 @@ export default {
       }
     },
     _checkMore(data) {
-      if (data.song.list.length && data.song.curpage * perpage >= data.totalnum) {
+      if (!data.song.list.length || data.song.curpage * perpage >= data.totalnum) {
         this.hasMore = false
       }
     },
@@ -141,7 +145,8 @@ export default {
   },
   components: {
     Scroll,
-    Loading
+    Loading,
+    NoResult
   },
   watch: {
     query(newQuery) {
@@ -180,4 +185,9 @@ export default {
           overflow: hidden
           .text
             no-wrap()
+    .no-result-wrapper
+      position: absolute
+      width: 100%
+      top: 50%
+      transform: translateY(-50%)
 </style>
