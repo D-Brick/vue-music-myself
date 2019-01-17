@@ -1,8 +1,10 @@
 <template>
   <scroll class="suggest"
           :pullup="pullup"
+          :beforeScroll="beforeScroll"
           :data="result"
-          @scrollToEnd="searchMore">
+          @scrollToEnd="searchMore"
+          @beforeScroll="listScroll">
     <ul class="suggest-list">
       <li class="suggest-item"
           v-for="(item, index) in result"
@@ -45,17 +47,15 @@ export default {
     query: {
       type: String,
       default: ''
-    },
-    pullup: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
     return {
       page: 1,
       hasMore: false,
-      result: []
+      result: [],
+      pullup: true,
+      beforeScroll: true
     }
   },
   methods: {
@@ -83,6 +83,9 @@ export default {
           this._checkMore(res.data)
         }
       })
+    },
+    listScroll() {
+      this.$emit('listScroll')
     },
     selectItem(item) {
       if (item.type === TYPE_SINGER) {
