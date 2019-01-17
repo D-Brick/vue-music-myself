@@ -5,6 +5,9 @@ import {
 import {
   shuffle
 } from 'common/js/util'
+// import {
+//   saveSearch
+// } from 'common/js/cache'
 
 function findIndex(list, song) {
   const index = list.findIndex((item) => {
@@ -91,4 +94,27 @@ export const insertSong = function ({
   commit(types.SET_CURRENT_INDEX, currentIndex)
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING_STATE, true)
+}
+
+function insertArray(arr, val, compare, maxLen) {
+  const index = arr.findIndex(compare)
+  if (index === 0) {
+    return
+  }
+  if (index > 0) {
+    arr.splice(index, 1)
+  }
+  arr.unshift(val)
+  if (maxLen && arr.length > maxLen) {
+    arr.pop()
+  }
+  return arr
+}
+
+export const saveSearchHistory = function({
+  commit, state
+}, query) {
+  commit(types.SET_SEARCH_HISTORY, insertArray(state.searchHistory.slice(), query, (item) => {
+    item === query
+  }, 15))
 }

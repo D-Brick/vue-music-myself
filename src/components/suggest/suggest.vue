@@ -100,6 +100,7 @@ export default {
       } else {
         this.insertSong(item)
       }
+      this.$emit('select')
     },
     getIconCls(item) {
       if (item.type === TYPE_SINGER) {
