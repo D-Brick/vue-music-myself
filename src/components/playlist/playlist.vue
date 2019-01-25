@@ -37,7 +37,11 @@
         <div class="list-close" @click="hide">
           <span>关闭</span>
         </div>
-        <confirm ref="confirm" text="是否确认清空歌曲列表" cancelBtnText="取消" confirmBtnText="清空" @confirm="confirmClear">
+        <confirm ref="confirm"
+                 text="是否确认清空歌曲列表"
+                 cancelBtnText="取消"
+                 confirmBtnText="清空"
+                 @confirm="confirmClear">
         </confirm>
       </div>
     </div>
@@ -45,34 +49,19 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { shuffle } from 'common/js/util'
+import { mapActions } from 'vuex'
+import { playerMixin } from 'common/js/mixin'
 import { playMode } from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import Confirm from 'base/confirm/confirm'
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       showFlag: false
     }
   },
   computed: {
-    ...mapGetters([
-      'sequenceList',
-      'playList',
-      'mode',
-      'currentSong'
-    ]),
-    iconMode() {
-      switch (this.mode) {
-        case 0:
-          return 'icon-sequence'
-        case 1:
-          return 'icon-loop'
-        case 2:
-          return 'icon-random'
-      }
-    },
     textMode() {
       switch (this.mode) {
         case 0:
@@ -116,18 +105,6 @@ export default {
       })
       this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
     },
-    changeMode() {
-      const newMode = (this.mode + 1) % 3
-      this.setPlayMode(newMode)
-      let list = null
-      if (newMode === playMode.random) {
-        list = shuffle(this.sequenceList)
-      } else {
-        list = this.sequenceList
-      }
-      this.resetCurrentIndex(list)
-      this.setPlayList(list)
-    },
     showConfirm() {
       this.$refs.confirm.show()
     },
@@ -135,18 +112,6 @@ export default {
       this.deleteSongList()
       this.hide()
     },
-    resetCurrentIndex(list) {
-      let index = list.findIndex((item) => {
-        return item.id === this.currentSong.id
-      })
-      this.setCurrentIndex(index)
-    },
-    ...mapMutations({
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setPlayingState: 'SET_PLAYING_STATE',
-      setPlayMode: 'SET_PLAY_MODE',
-      setPlayList: 'SET_PLAY_LIST'
-    }),
     ...mapActions([
       'deleteSong',
       'deleteSongList'
