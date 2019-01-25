@@ -19,8 +19,9 @@ function insertArray(arr, val, compare, maxLen) {
 
 function deleteArray(arr, compare) {
   const index = arr.findIndex(compare)
-  console.log(index)
-  arr.splice(index, 1)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
 }
 
 export function saveSearch(query) {
@@ -42,7 +43,7 @@ export function deleteSearch(query) {
 }
 
 export function clearSearch() {
-  storage.set(SEARCH_KEY, [])
+  storage.remove(SEARCH_KEY)
   return []
 }
 

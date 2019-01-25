@@ -1,5 +1,6 @@
 <template>
-  <scroll class="suggest"
+  <scroll ref="suggest"
+          class="suggest"
           :pullup="pullup"
           :beforeScroll="beforeScroll"
           :data="result"
@@ -59,6 +60,9 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.$refs.suggest.refresh()
+    },
     search(query) {
       this.hasMore = true
       search(this.query, this.page, this.showSinger, perpage).then((res) => {
