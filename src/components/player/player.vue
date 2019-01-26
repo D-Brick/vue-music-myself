@@ -86,8 +86,9 @@
               <i class="icon-next">
               </i>
             </div>
-            <div class="icon i-right">
-              <i class="icon-not-favorite">
+            <div class="icon i-right"
+                 @click="toggleFavorite(currentSong)">
+              <i :class="getFavoriteIcon(currentSong)">
               </i>
             </div>
           </div>
@@ -129,7 +130,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import { playMode } from 'common/js/config'
@@ -418,7 +419,10 @@ export default {
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -431,6 +435,7 @@ export default {
       setTimeout(() => {
         this.$refs.audio.play()
       }, 1000)
+      this.savePlayHistory(newSong)
       this.getLyric()
     },
     playing(newPlaying) {

@@ -19,8 +19,9 @@
                 @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text" v-html="item.name"></span>
-              <span class="like">
-                <i class="icon-not-favorite"></i>
+              <span class="like"
+                    @click.stop="toggleFavorite(item)">
+                <i :class="getFavoriteIcon(item)"></i>
               </span>
               <span class="delete" @click.stop="deleteSong(item)">
                 <i class="icon-delete"></i>
@@ -29,7 +30,7 @@
           </transition-group>
         </Scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="showAddSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -37,13 +38,14 @@
         <div class="list-close" @click="hide">
           <span>关闭</span>
         </div>
-        <confirm ref="confirm"
-                 text="是否确认清空歌曲列表"
-                 cancelBtnText="取消"
-                 confirmBtnText="清空"
-                 @confirm="confirmClear">
-        </confirm>
       </div>
+      <confirm ref="confirm"
+               text="是否确认清空歌曲列表"
+               cancelBtnText="取消"
+               confirmBtnText="清空"
+               @confirm="confirmClear">
+      </confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
@@ -54,6 +56,7 @@ import { playerMixin } from 'common/js/mixin'
 import { playMode } from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import Confirm from 'base/confirm/confirm'
+import AddSong from 'components/add-song/add-song'
 export default {
   mixins: [playerMixin],
   data() {
@@ -112,6 +115,9 @@ export default {
       this.deleteSongList()
       this.hide()
     },
+    showAddSong() {
+      this.$refs.addSong.show()
+    },
     ...mapActions([
       'deleteSong',
       'deleteSongList'
@@ -119,7 +125,8 @@ export default {
   },
   components: {
     Scroll,
-    Confirm
+    Confirm,
+    AddSong
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -210,7 +217,7 @@ export default {
             .icon-favorite
               color: $color-sub-theme
           .delete
-            extend-click()
+            // extend-click()
             font-size: $font-size-small
             color: $color-theme
       .list-operate

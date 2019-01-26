@@ -17,7 +17,7 @@ export default {
       type: Boolean,
       default: true
     },
-    dataList: {
+    data: {
       type: Array,
       default: null
     },
@@ -32,6 +32,10 @@ export default {
     beforeScroll: {
       type: Boolean,
       default: false
+    },
+    refreshDelay: {
+      type: Number,
+      default: 20
     }
   },
   mounted () {
@@ -86,10 +90,10 @@ export default {
     }
   },
   watch: {
-    dataList () {
+    data () {
       setTimeout(() => {
         this.refresh()
-      }, 20)
+      }, this.refreshDelay)
     }
   }
 }
