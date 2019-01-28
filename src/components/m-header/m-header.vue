@@ -4,6 +4,11 @@
     <h1 class="title">
       Chicken Music
     </h1>
+    <router-link tag="div" class="user" to="/user">
+      <span class="user-icon">
+        <i class="icon-mine"></i>
+      </span>
+    </router-link>
   </div>
 </template>
 
@@ -22,6 +27,7 @@ export default {}
     display: flex
     justify-content: center
     align-items: center
+    font-size: $font-size-large
     .icon
       display: inline-block
       width: 2rem
@@ -31,4 +37,9 @@ export default {}
     .title
       display: inline-block
       padding-left: .5rem
+    .user
+      extend-click()
+      position: absolute
+      right: 12px
+      font-size: 20px
 </style>
