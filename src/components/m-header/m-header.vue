@@ -29,7 +29,7 @@ export default {}
     align-items: center
     font-size: $font-size-large
     .icon
-      display: inline-block
+      // display: inline-block
       width: 2rem
       height: 2rem
       bg-image('logo')
