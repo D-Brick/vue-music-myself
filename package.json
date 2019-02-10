@@ -87,6 +87,7 @@
     "shelljs": "^0.7.6",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.1",
+    "uglifyjs-webpack-plugin": "^2.1.1",
     "url-loader": "^0.5.8",
     "vconsole": "^2.5.2",
     "vue-loader": "^13.3.0",
