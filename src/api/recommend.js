@@ -17,7 +17,7 @@ export function getRecommend () {
 }
 
 export function getDiscList () {
-  const url = debug ? '/api/getDiscList' : 'http://http://www.dengheran.store/music/api/getDiscList'
+  const url = debug ? '/api/getDiscList' : 'http://www.dengheran.store/music/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',

@@ -6,7 +6,7 @@ import { ERR_OK } from 'api/config'
 const debug = process.env.NODE_ENV !== 'production'
 
 export function getLyric(mid) {
-  const url = debug ? '/api/lyric' : 'http://http://www.dengheran.store/music/api/lyric'
+  const url = debug ? '/api/lyric' : 'http://www.dengheran.store/music/api/lyric'
 
   const data = Object.assign({}, commonParams, {
     songmid: mid,
