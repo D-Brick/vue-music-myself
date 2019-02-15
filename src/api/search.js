@@ -17,7 +17,7 @@ export function getHotKey() {
 }
 
 export function search(query, page, zhida, perpage) {
-  const url = debug ? '/api/search' : 'http://202.182.107.168/music/api/search'
+  const url = debug ? '/api/search' : 'http://www.dengheran.store/music/api/search'
 
   const data = Object.assign({}, commonParams, {
     w: query,

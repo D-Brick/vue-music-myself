@@ -26,7 +26,7 @@ export function getLyric(mid) {
 }
 
 export function getSongsUrl(songs) {
-  const url = debug ? '/api/getPurlUrl' : 'http://202.182.107.168/music/api/getPurlUrl'
+  const url = debug ? '/api/getPurlUrl' : 'http://www.dengheran.store/music/api/getPurlUrl'
 
   let mids = []
   let types = []

@@ -39,7 +39,7 @@ export function getDiscList () {
 }
 
 export function getSongList(disstid) {
-  const url = debug ? '/api/getCdInfo' : 'http://202.182.107.168/music/api/getCdInfo'
+  const url = debug ? '/api/getCdInfo' : 'http://www.dengheran.store/music/api/getCdInfo'
 
   const data = Object.assign({}, commonParams, {
     disstid,
