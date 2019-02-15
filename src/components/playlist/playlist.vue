@@ -73,6 +73,8 @@ export default {
           return '单曲循环'
         case 2:
           return '随机播放'
+        default:
+          return ''
       }
     }
   },
