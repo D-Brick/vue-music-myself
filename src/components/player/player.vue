@@ -360,18 +360,18 @@ export default {
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
         if (this.currentSong.lyric !== lyric) {
+          //todo: error report
           return
         }
-        console.log('lyric', lyric)
-        this.currentLyric = new Lyric(lyric, this.handleLyric)
-        console.log('currentLyric:', this.currentLyric)
+        this.currentLyric = new Lyric(lyric, handleLyric)
         if (this.playing) {
           this.currentLyric.play()
         }
-      }).catch(() => {
+      }).catch((e) => {
+        //todo: error report
+        this.currentLineNum = 0
         this.currentLyric = null
         this.playingLyric = ''
-        this.currentLineNum = 0
       })
     },
     handleLyric({lineNum, txt}) {
@@ -379,11 +379,11 @@ export default {
         return
       }
       this.currentLineNum = lineNum
-      if (lineNum > 5) {
-        let lineEl = this.$refs.lyricLine[lineNum - 5]
-        this.$refs.lyricList.scrollToElement(lineEl, 1000)
-      } else {
+      if (lineNum <= 5) {
         this.$refs.lyricList.scrollTo(0, 0, 1000)
+      } else {
+        var lineEl = this.$refs.lyricLine[lineNum - 5]
+        this.$refs.lyricList.scrollToElmenet(lineEl, 1000)
       }
       this.playingLyric = txt
     },
