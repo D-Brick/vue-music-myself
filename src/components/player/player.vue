@@ -195,6 +195,7 @@ export default {
         return
       }
       this.setPlayingState(!this.playing)
+      this.currentLyric.togglePlay()
     },
     showPlaylist() {
       this.$refs.playlist.show()
@@ -361,7 +362,9 @@ export default {
         if (this.currentSong.lyric !== lyric) {
           return
         }
+        console.log('lyric', lyric)
         this.currentLyric = new Lyric(lyric, this.handleLyric)
+        console.log('currentLyric:', this.currentLyric)
         if (this.playing) {
           this.currentLyric.play()
         }
@@ -434,9 +437,9 @@ export default {
       }
       setTimeout(() => {
         this.$refs.audio.play()
+        this.getLyric()
       }, 1000)
       this.savePlayHistory(newSong)
-      this.getLyric()
     },
     playing(newPlaying) {
       if (!this.songReady) {
